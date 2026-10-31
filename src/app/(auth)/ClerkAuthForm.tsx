@@ -138,7 +138,13 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
   const fe = login ? inErrors.fields : upErrors.fields;
   const fieldErr = (x: { longMessage?: string; message: string } | null | undefined) => x?.longMessage ?? x?.message;
   // Field-level errors render under their input; don't repeat them in the banner.
-  const fieldTexts = Object.values(fe).map((x) => fieldErr(x as Parameters<typeof fieldErr>[0])).filter(Boolean);
+  // Only fields with an input on this step; errors on any other field (username, legalAccepted...) stay in the banner.
+  const visible =
+    step === 'form' ? (login ? [inErrors.fields.identifier, inErrors.fields.password] : [upErrors.fields.firstName, upErrors.fields.emailAddress, upErrors.fields.password])
+    : step === 'reset' ? [inErrors.fields.identifier]
+    : step === 'reset-code' ? [inErrors.fields.code, inErrors.fields.password]
+    : [fe.code];
+  const fieldTexts = visible.map(fieldErr).filter(Boolean);
   const showMsg = msg && !(msg.tone === 'error' && fieldTexts.includes(msg.text));
   const emailOk = /\S+@\S+\.\S+/.test(f.email);
   const ready =
