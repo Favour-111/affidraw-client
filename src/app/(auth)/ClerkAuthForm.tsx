@@ -30,6 +30,7 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
   const [codeKind, setCodeKind] = useState<CodeKind>('signup');
   const [msg, setMsg] = useState<{ tone: 'error' | 'success'; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
   const finishing = useRef(false);
 
   useEffect(() => { const e = sp.get('error'); if (e) setMsg({ tone: 'error', text: AUTH_ERRORS[e] ?? AUTH_ERRORS.clerk_failed }); }, [sp]);
@@ -42,8 +43,25 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
 
   /** Runs a Clerk call; returns false (and shows the message) when it failed. */
   async function run(call: Promise<Res>, fallback?: string) {
-    const { error } = await call;
-    if (error) { setMsg({ tone: 'error', text: clerkMessage(error, fallback) }); return false; }
+    try {
+      const { error } = await call;
+      if (error) { setMsg({ tone: 'error', text: clerkMessage(error, fallback) }); return false; }
+      return true;
+    } catch (e) {
+      setMsg({ tone: 'error', text: clerkMessage(e, fallback) });
+      return false;
+    }
+  }
+
+  /** Clerk's script loads from Clerk's servers; calls made before it is ready do nothing, so wait for it (up to 15s). */
+  async function whenReady() {
+    for (let waited = 0; !clerk.loaded; waited += 100) {
+      if (waited >= 15_000) {
+        setMsg({ tone: 'error', text: 'We couldn’t reach the sign-in service. Check your internet connection and try again.' });
+        return false;
+      }
+      await new Promise((r) => setTimeout(r, 100));
+    }
     return true;
   }
 
@@ -91,6 +109,7 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
     if (!ready || busy) return;
     setBusy(true); setMsg(null);
     try {
+      if (!(await whenReady())) return;
       if (step === 'form' && login) {
         if (await run(signIn.password({ identifier: f.email.trim(), password: f.password }))) await afterSignInStep();
       } else if (step === 'form') {
@@ -124,7 +143,14 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
   }
 
   async function google() {
+    if (googleBusy) return;
     setMsg(null);
+    setGoogleBusy(true);
+    // On success the page navigates to Google, so the button stays locked; unlock only on failure.
+    if (!(await whenReady()) || !(await startGoogle())) setGoogleBusy(false);
+  }
+
+  async function startGoogle() {
     if (!login) saveSignupExtras({ phone: f.phone.trim(), isBusiness: f.isBusiness });
     const origin = window.location.origin;
     const params = {
@@ -132,7 +158,7 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
       redirectUrl: `${origin}/auth/complete?next=${encodeURIComponent(next)}`,
       redirectCallbackUrl: `${origin}/sso-callback?next=${encodeURIComponent(next)}`,
     };
-    await run(login ? signIn.sso(params) : signUp.sso(params), AUTH_ERRORS.google_failed);
+    return run(login ? signIn.sso(params) : signUp.sso(params), AUTH_ERRORS.google_failed);
   }
 
   const fe = login ? inErrors.fields : upErrors.fields;
@@ -205,7 +231,7 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
         )}
       </div>
 
-      {step === 'form' && <GoogleButton login={login} onClick={google} disabled={busy} />}
+      {step === 'form' && <GoogleButton login={login} onClick={google} disabled={busy} loading={googleBusy} />}
 
       <div className="mt-auto pt-10">
         <Button type="submit" full size="lg" loading={busy} disabled={!ready}>{step === 'reset' ? 'Send code' : step === 'reset-code' ? 'Update password' : 'Continue'}</Button>

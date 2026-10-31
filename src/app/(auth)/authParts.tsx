@@ -56,12 +56,13 @@ export function AuthHeading({ title, sub }: { title: string; sub: React.ReactNod
   );
 }
 
-export function GoogleButton({ login, onClick, disabled }: { login: boolean; onClick: () => void; disabled?: boolean }) {
+export function GoogleButton({ login, onClick, disabled, loading }: { login: boolean; onClick: () => void; disabled?: boolean; loading?: boolean }) {
   return (
     <div className="mt-6">
       <div className="flex items-center gap-3 text-meta font-medium text-muted" aria-hidden><span className="h-px flex-1 bg-line" />OR<span className="h-px flex-1 bg-line" /></div>
-      <button type="button" onClick={onClick} disabled={disabled} className="mt-6 flex h-12 w-full items-center justify-center gap-3 rounded-[10px] bg-surface-2 text-body font-semibold text-ink transition-colors hover:bg-surface-3 disabled:opacity-60">
-        <GoogleLogo />{login ? 'Log in with Google' : 'Sign up with Google'}
+      <button type="button" onClick={onClick} disabled={disabled || loading} aria-busy={loading} className="mt-6 flex h-12 w-full items-center justify-center gap-3 rounded-[10px] bg-surface-2 text-body font-semibold text-ink transition-colors hover:bg-surface-3 disabled:opacity-60">
+        {loading ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-line border-t-ink" aria-hidden /> : <GoogleLogo />}
+        {loading ? 'Opening Google…' : login ? 'Log in with Google' : 'Sign up with Google'}
       </button>
     </div>
   );
