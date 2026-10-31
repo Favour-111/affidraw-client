@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+/*
+ * Affidraw design system — tokens.
+ * Brand green is exactly #4A943E. Measured WCAG 2.1 contrast ratios:
+ *   #FFFFFF on #4A943E  3.75  -> fails AA for button text, so #4A943E is used for accents only
+ *                                (logo, active indicators, progress, icons, focus ring)
+ *   #FFFFFF on #3D7E33  4.96  -> filled buttons ("primary-strong", the brief's Primary Hover token)
+ *   #3A7A30 on #EEF6EC  4.75  -> tinted buttons and selected chips
+ *   #3A7A30 on #FFFFFF  5.24  -> green text on white
+ *   #667469 on #FFFFFF  4.92  -> muted text (4.65 on the page background)
+ */
+:root {
+  --primary: #4a943e;
+  --primary-strong: #3d7e33;
+  --primary-strong-hover: #356d2c;
+  --primary-soft: #eef6ec;
+  --primary-soft-hover: #e2efdf;
+  --primary-soft-border: #cfe5ca;
+  --primary-text: #3a7a30;
+
+  --ink: #10231a;
+  --text: #2a372e;
+  --muted: #667469;
+  --subtle: #8a968d;
+
+  --bg: #f7f9f7;
+  --surface: #ffffff;
+  --surface-2: #f2f5f2;
+  --surface-3: #e9eee9;
+  --tint: #f3f8f2;
+  --border: #e6ebe6;
+  --border-strong: #d5ddd5;
+
+  --danger: #c2362f;
+  --danger-soft: #fdf1f0;
+  --danger-border: #f6d3d0;
+  --warning: #9a5b00;
+  --warning-soft: #fef6e7;
+  --warning-border: #f6e1b8;
+
+  --overlay: rgb(16 35 26 / 0.45);
+  --footer: #0f1f14;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --primary-soft: #1c2a1b;
+    --primary-soft-hover: #23341f;
+    --primary-soft-border: #2f4a2b;
+    --primary-text: #6cc15e;
+    --ink: #f2f5f1;
+    --text: #dbe2d9;
+    --muted: #a3ada0;
+    --subtle: #7f8a7d;
+    --bg: #0e120e;
+    --surface: #151a15;
+    --surface-2: #1c221c;
+    --surface-3: #252c25;
+    --tint: #121812;
+    --border: #262d26;
+    --border-strong: #343d34;
+    --danger: #ef7b77;
+    --danger-soft: #2a1716;
+    --danger-border: #4a2523;
+    --warning: #e6a23c;
+    --warning-soft: #2a2213;
+    --warning-border: #4a3a1c;
+    --overlay: rgb(0 0 0 / 0.6);
+    --footer: #0a0d0a;
+  }
+}
+
+
+/* Type scale. Phones use a compact scale (measured against the reference app); 640px+ uses the roomier one. */
+:root {
+  --fs-display: 1.0625rem; --lh-display: 1.375rem;
+  --fs-title: 1.125rem;    --lh-title: 1.5rem;
+  --fs-heading: 0.875rem;  --lh-heading: 1.25rem;
+  --fs-body: 0.8125rem;    --lh-body: 1.25rem;
+  --fs-label: 0.75rem;     --lh-label: 1.125rem;
+  --fs-meta: 0.6875rem;    --lh-meta: 1rem;
+  --fs-micro: 0.625rem;    --lh-micro: 0.875rem;
+}
+@media (min-width: 640px) {
+  :root {
+    --fs-display: 1.1875rem; --lh-display: 1.5rem;
+    --fs-title: 1.3125rem;   --lh-title: 1.75rem;
+    --fs-heading: 0.9375rem; --lh-heading: 1.375rem;
+    --fs-body: 0.875rem;     --lh-body: 1.375rem;
+    --fs-label: 0.8125rem;   --lh-label: 1.1875rem;
+    --fs-meta: 0.75rem;      --lh-meta: 1.0625rem;
+  }
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-strong-hover: var(--primary-strong-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-hover: var(--primary-soft-hover);
+  --color-primary-soft-border: var(--primary-soft-border);
+  --color-primary-text: var(--primary-text);
+  --color-ink: var(--ink);
+  --color-fg: var(--text);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-tint: var(--tint);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-border: var(--danger-border);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-border: var(--warning-border);
+  --color-footer: var(--footer);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Type scale: display / title / heading / body / label / meta / micro (values above, responsive) */
+  --text-display: var(--fs-display);
+  --text-display--line-height: var(--lh-display);
+  --text-display--letter-spacing: -0.02em;
+  --text-title: var(--fs-title);
+  --text-title--line-height: var(--lh-title);
+  --text-title--letter-spacing: -0.02em;
+  --text-heading: var(--fs-heading);
+  --text-heading--line-height: var(--lh-heading);
+  --text-body: var(--fs-body);
+  --text-body--line-height: var(--lh-body);
+  --text-label: var(--fs-label);
+  --text-label--line-height: var(--lh-label);
+  --text-meta: var(--fs-meta);
+  --text-meta--line-height: var(--lh-meta);
+  --text-micro: var(--fs-micro);
+  --text-micro--line-height: var(--lh-micro);
+  --text-micro--letter-spacing: 0.08em;
+}
+
+/* Base element styles live in the base layer so utility classes (e.g. text-white on a heading) always win. */
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3 { color: var(--ink); }
+  ::placeholder { color: var(--muted); opacity: 0.85; }
+}
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 8px; }
+
+.tabular { font-variant-numeric: tabular-nums; }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.pb-nav { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.skeleton { position: relative; overflow: hidden; background: var(--surface-2); border-radius: 12px; }
+.skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(128 140 128 / 0.10), transparent); animation: shimmer 1.4s infinite; }
+
+@keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop { 0% { transform: scale(0.94); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.fade-up { animation: fade-up 0.25s ease-out both; }
+.pop { animation: pop 0.25s ease-out both; }
+.sheet { animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@media (min-width: 640px) { .sheet { animation: pop 0.2s ease-out both; } }
+.overlay { animation: fade-in 0.2s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+@media print {
+  header, nav, footer, .no-print { display: none !important; }
+  body { background: #fff; }
+}
+
+/* ---- Ticket reveal (slot machine) ---- */
+@keyframes bulb { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+.bulb { animation: bulb 0.9s ease-in-out infinite; }
+@keyframes confetti-fall {
+  0% { transform: translate3d(0, -20px, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--dx, 0px), 340px, 0) rotate(var(--rot, 540deg)); opacity: 0; }
+}
+.confetti { position: absolute; top: 0; width: 8px; height: 12px; border-radius: 2px; animation: confetti-fall 1.6s cubic-bezier(0.2, 0.6, 0.4, 1) forwards; }
+@keyframes land { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+.land { animation: land 0.35s ease-out; }
+
+@keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.caret { animation: caret 1s step-end infinite; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+.shake { animation: shake 0.4s ease-in-out; }
