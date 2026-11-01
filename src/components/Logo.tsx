@@ -12,13 +12,13 @@ export function LogoMark({ size = 32 }: { size?: number }) {
 export default function Logo({ href = '/', suffix, inverse, size = 'md' }: { href?: string; suffix?: string; inverse?: boolean; size?: 'md' | 'lg' }) {
   const lg = size === 'lg';
   return (
-    <Link href={href} className="inline-flex items-center gap-2" aria-label="Affidraw home">
+    <Link href={href} className="inline-flex items-center gap-2" aria-label="Raffler home">
       {lg ? (
         <span className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] bg-primary text-white sm:h-[38px] sm:w-[38px] sm:rounded-[9px]" aria-hidden>
           <Ticket className="h-4 w-4 sm:h-[21px] sm:w-[21px]" strokeWidth={2.25} />
         </span>
       ) : <LogoMark />}
-      <span className={`${lg ? 'text-[1.0625rem] sm:text-[1.3125rem]' : 'text-[1.125rem]'} font-extrabold tracking-[-0.035em] ${inverse ? 'text-white' : 'text-ink'}`}>affidraw</span>
+      <span className={`${lg ? 'text-[1.0625rem] sm:text-[1.3125rem]' : 'text-[1.125rem]'} font-extrabold tracking-[-0.035em] ${inverse ? 'text-white' : 'text-ink'}`}>raffler</span>
       {suffix && <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-micro font-semibold uppercase text-muted">{suffix}</span>}
     </Link>
   );

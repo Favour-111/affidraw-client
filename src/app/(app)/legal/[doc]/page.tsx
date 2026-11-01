@@ -5,7 +5,7 @@ const DOCS: Record<string, { title: string; body: string[] }> = {
     title: 'Terms and conditions',
     body: [
       'DRAFT — this text is a placeholder and must be reviewed by qualified Nigerian counsel before launch.',
-      'Affidraw lists prize campaigns supplied by sponsors. Each campaign publishes its ticket price, total tickets, per-person limit, eligibility, draw procedure, refund and delivery rules before you pay.',
+      'Raffler lists prize campaigns supplied by sponsors. Each campaign publishes its ticket price, total tickets, per-person limit, eligibility, draw procedure, refund and delivery rules before you pay.',
       'Tickets are issued only after payment is verified by our payment provider. Ticket numbers are assigned by the platform and cannot be chosen or transferred.',
       'A campaign’s ticket price and rules cannot be changed after sales begin. If a campaign is cancelled, every valid ticket is refunded in full.',
       'The winner is selected by a documented, publicly verifiable procedure and confirmed by an authorised administrator before publication.',

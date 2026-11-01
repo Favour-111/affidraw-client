@@ -33,8 +33,8 @@ export function clerkMessage(e: unknown, fallback = 'Something went wrong. Pleas
 const ERROR_PARAM: Record<string, string> = { CLERK_EMAIL_UNVERIFIED: 'unverified', ACCOUNT_SUSPENDED: 'suspended' };
 
 /**
- * Trades the active Clerk session for an Affidraw session cookie, then ends the Clerk session:
- * from here on the app only trusts its own cookie, and logging out of Affidraw leaves nothing behind.
+ * Trades the active Clerk session for an Raffler session cookie, then ends the Clerk session:
+ * from here on the app only trusts its own cookie, and logging out of Raffler leaves nothing behind.
  */
 export function useClerkExchange() {
   const clerk = useClerk();

@@ -127,7 +127,7 @@ export default function Withdraw() {
           <h2 className="mt-5 text-display font-bold">Verify your identity to withdraw</h2>
           <p className="mt-2 max-w-sm text-body text-muted">For your security and to meet financial regulations, withdrawals are available once your identity is verified.</p>
           <div className="mt-8 w-full max-w-sm space-y-2">
-            <LinkButton href="mailto:support@affidraw.example?subject=Identity%20verification" full size="lg">Contact support to verify</LinkButton>
+            <LinkButton href="mailto:support@raffler.example?subject=Identity%20verification" full size="lg">Contact support to verify</LinkButton>
             <LinkButton href="/wallet" variant="outline" full size="lg">Back to wallet</LinkButton>
           </div>
         </div>

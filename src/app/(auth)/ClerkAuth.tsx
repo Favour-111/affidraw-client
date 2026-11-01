@@ -59,7 +59,7 @@ const appearance = {
 
 /**
  * Login/signup with Clerk's own UI. After Clerk signs the user in, /auth/complete trades the
- * Clerk session for the normal Affidraw session (see useClerkExchange).
+ * Clerk session for the normal Raffler session (see useClerkExchange).
  */
 export default function ClerkAuth({ mode }: { mode: 'login' | 'register' }) {
   const login = mode === 'login';

@@ -157,7 +157,7 @@ function Footer() {
           <ul className={col}>
             <li><Link className={a} href="/">Market</Link></li>
             <li><Link className={a} href="/tickets">My Tickets</Link></li>
-            <li><a className={a} href="mailto:support@affidraw.example">Help &amp; support</a></li>
+            <li><a className={a} href="mailto:support@raffler.example">Help &amp; support</a></li>
           </ul>
         </div>
         <div>
@@ -172,7 +172,7 @@ function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-6xl space-y-3 px-4 py-6 text-meta text-white/60">
           <p>Entering a draw costs money and winning is never guaranteed — only spend what you can afford. Participation is restricted to people aged 18 and over. Every result is published with the evidence needed to verify it.</p>
-          <p className="font-semibold text-white/80">© {new Date().getFullYear()} Affidraw. All rights reserved.</p>
+          <p className="font-semibold text-white/80">© {new Date().getFullYear()} Raffler. All rights reserved.</p>
         </div>
       </div>
     </footer>

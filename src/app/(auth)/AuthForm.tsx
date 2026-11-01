@@ -60,7 +60,7 @@ function PasswordAuthForm({ mode }: { mode: 'login' | 'register' }) {
         <Field label="Email address" required error={fe('email')}><input className={inputCls} type="email" inputMode="email" autoComplete="email" placeholder="e.g. you@example.com" value={f.email} onChange={(e) => set('email', e.target.value)} /></Field>
         {!login && <Field label="Phone number" hint="Optional — used for prize delivery if you win." error={fe('phone')}><input className={inputCls} type="tel" autoComplete="tel" placeholder="e.g. 0801 234 5678" value={f.phone} onChange={(e) => set('phone', e.target.value)} /></Field>}
         <Field label="Password" required error={fe('password')} hint={login ? undefined : 'At least 10 characters.'}
-          action={login ? <a href="mailto:support@affidraw.example?subject=Password%20reset" className="text-meta font-semibold text-muted hover:text-ink">Forgot password?</a> : undefined}>
+          action={login ? <a href="mailto:support@raffler.example?subject=Password%20reset" className="text-meta font-semibold text-muted hover:text-ink">Forgot password?</a> : undefined}>
           <PasswordInput value={f.password} onChange={(v) => set('password', v)} autoComplete={login ? 'current-password' : 'new-password'} />
         </Field>
         {!login && <BusinessToggle checked={f.isBusiness} onChange={(v) => set('isBusiness', v)} />}

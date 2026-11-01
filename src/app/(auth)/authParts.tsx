@@ -41,7 +41,7 @@ export function AuthTopBar({ onBack }: { onBack?: () => void }) {
   return (
     <div className="flex items-center justify-between">
       <button type="button" onClick={onBack ?? (() => (history.length > 1 ? router.back() : router.push('/')))} aria-label="Back" className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-2 text-ink hover:bg-surface-3"><ArrowLeft className="h-4.5 w-4.5" /></button>
-      <a href="mailto:support@affidraw.example" aria-label="Contact support" className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-2 text-ink hover:bg-surface-3"><Headphones className="h-4.5 w-4.5" /></a>
+      <a href="mailto:support@raffler.example" aria-label="Contact support" className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-2 text-ink hover:bg-surface-3"><Headphones className="h-4.5 w-4.5" /></a>
     </div>
   );
 }
@@ -71,7 +71,7 @@ export function GoogleButton({ login, onClick, disabled, loading }: { login: boo
 export function SwitchLink({ login, next }: { login: boolean; next: string }) {
   return (
     <p className="mt-5 text-center text-label text-muted">
-      {login ? <>New to Affidraw? <Link className="font-semibold text-primary-text hover:underline" href={`/register?next=${encodeURIComponent(next)}`}>Sign up</Link></> : <>Already have an account? <Link className="font-semibold text-primary-text hover:underline" href={`/login?next=${encodeURIComponent(next)}`}>Log in</Link></>}
+      {login ? <>New to Raffler? <Link className="font-semibold text-primary-text hover:underline" href={`/register?next=${encodeURIComponent(next)}`}>Sign up</Link></> : <>Already have an account? <Link className="font-semibold text-primary-text hover:underline" href={`/login?next=${encodeURIComponent(next)}`}>Log in</Link></>}
     </p>
   );
 }

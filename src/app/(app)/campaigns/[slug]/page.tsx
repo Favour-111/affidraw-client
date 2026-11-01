@@ -104,7 +104,7 @@ export default function CampaignPage() {
   }
 
   async function share() {
-    const data = { title: c!.title, text: `Enter the draw for ${c!.title} on Affidraw`, url: window.location.href };
+    const data = { title: c!.title, text: `Enter the draw for ${c!.title} on Raffler`, url: window.location.href };
     try {
       if (navigator.share) await navigator.share(data);
       else { await navigator.clipboard.writeText(data.url); setCopied(true); setTimeout(() => setCopied(false), 2000); }

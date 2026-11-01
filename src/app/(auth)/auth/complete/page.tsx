@@ -6,7 +6,7 @@ import { takeSignupExtras, useClerkExchange } from '@/lib/clerk';
 import { useNext } from '../../authParts';
 import Finishing from '../../Finishing';
 
-/** Final hop of the Google flow: swap the Clerk session for an Affidraw session. */
+/** Final hop of the Google flow: swap the Clerk session for an Raffler session. */
 function Complete() {
   const clerk = useClerk();
   const router = useRouter();

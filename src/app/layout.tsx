@@ -7,7 +7,7 @@ import Providers from '@/components/Providers';
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta', display: 'swap', weight: ['400', '500', '600', '700', '800'] });
 
 export const metadata: Metadata = {
-  title: { default: 'Affidraw — Your next big win starts here', template: '%s · Affidraw' },
+  title: { default: 'Raffler — Your next big win starts here', template: '%s · Raffler' },
   description: 'Discover prizes, enter verified draws, track your tickets and watch official results.',
 };
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#4A943E' };
