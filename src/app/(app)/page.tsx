@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CheckCircle2, Circle, Search, SearchX, Store, X } from 'lucide-react';
 import { api } from '@/lib/api';
 import type { Campaign } from '@/lib/types';
-import { useMe } from '@/lib/hooks';
+import { useMe, useWallet } from '@/lib/hooks';
 import CampaignCard, { CampaignCardSkeleton, FeaturedCampaign, FeaturedCompact } from '@/components/CampaignCard';
 import { EmptyState, ErrorState, LinkButton, UnderlineTabs, cx } from '@/components/ui';
 
@@ -21,18 +21,21 @@ function GetStarted() {
   const me = useMe();
   const user = me.data?.user;
   const t = useQuery({ queryKey: ['my-tickets', 'active'], queryFn: () => api<{ counts: Record<string, number> }>('/me/tickets?tab=active'), enabled: !!user });
-  if (me.isLoading || (user && !t.data)) return null;
+  const w = useWallet(!!user);
+  if (me.isLoading || (user && (!t.data || !w.data))) return null;
   const entered = !!t.data && Object.values(t.data.counts).some((n) => n > 0);
   if (entered) return null;
+  const deposited = !!w.data && Number(w.data.totalDeposited) > 0;
   const steps = [
     { title: 'Create your account', done: !!user, action: !user && <LinkButton href="/register" size="sm">Sign up</LinkButton> },
-    { title: 'Enter your first draw', done: false, action: user && <span className="text-meta font-semibold text-primary-text">Pick a prize below</span> },
+    { title: 'Make your first deposit', done: deposited, action: user && !deposited && <LinkButton href="/wallet/deposit" size="sm">Deposit</LinkButton> },
+    { title: 'Enter your first draw', done: false, action: user && deposited && <span className="text-meta font-semibold text-primary-text">Pick a prize below</span> },
   ];
-  const step = user ? 2 : 1;
+  const step = steps.findIndex((s) => !s.done) + 1;
   return (
     <section aria-label="Get started" className="overflow-hidden rounded-2xl border border-primary-soft-border bg-surface">
       <div className="flex items-center justify-between bg-primary-strong px-4 py-2.5 text-meta font-semibold text-white">
-        <span>Get started</span><span className="tabular text-white/85">Step {step} of 2</span>
+        <span>Get started</span><span className="tabular text-white/85">Step {step} of {steps.length}</span>
       </div>
       <ol className="divide-y divide-line">
         {steps.map((s) => (
