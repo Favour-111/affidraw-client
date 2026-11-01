@@ -39,6 +39,13 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
     if (clerk.loaded && clerk.session && !finishing.current) clerk.signOut({ redirectUrl: window.location.pathname + window.location.search });
   }, [clerk, clerk.loaded]);
 
+  // Safari (especially iOS) restores this page from its back/forward cache with buttons still locked.
+  useEffect(() => {
+    const onShow = (e: PageTransitionEvent) => { if (e.persisted) { setGoogleBusy(false); setBusy(false); } };
+    window.addEventListener('pageshow', onShow);
+    return () => window.removeEventListener('pageshow', onShow);
+  }, []);
+
   const extras = () => ({ name: f.name.trim(), phone: f.phone.trim(), isBusiness: f.isBusiness });
 
   /** Runs a Clerk call; returns false (and shows the message) when it failed. */
@@ -147,7 +154,12 @@ export default function ClerkAuthForm({ mode }: { mode: 'login' | 'register' }) 
     setMsg(null);
     setGoogleBusy(true);
     // On success the page navigates to Google, so the button stays locked; unlock only on failure.
-    if (!(await whenReady()) || !(await startGoogle())) setGoogleBusy(false);
+    if (!(await whenReady()) || !(await startGoogle())) return setGoogleBusy(false);
+    // Still here long after the redirect started: let the user retry instead of leaving the button stuck.
+    setTimeout(() => {
+      setGoogleBusy(false);
+      setMsg({ tone: 'error', text: 'Google didn’t open. Tap the button again, or continue with your email.' });
+    }, 20_000);
   }
 
   async function startGoogle() {
