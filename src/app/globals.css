@@ -1,4 +1,12 @@
+/* Clerk's component styles sit below Tailwind utilities, so the classes in (auth)/ClerkAuth.tsx win. */
+@layer theme, base, clerk, components, utilities;
 @import "tailwindcss";
+
+/* The auth pages render their own heading for the first step; Clerk's header still shows on later steps (e.g. "Check your email"). */
+.cl-signIn-start .cl-header,
+.cl-signUp-start .cl-header {
+  display: none;
+}
 
 /*
  * Affidraw design system — tokens.

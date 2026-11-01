@@ -6,10 +6,10 @@ import { api, ApiError } from '@/lib/api';
 import { CLERK_ENABLED } from '@/lib/clerk';
 import { Alert, Button, Field, inputCls } from '@/components/ui';
 import { AUTH_ERRORS, AuthHeading, AuthTopBar, BusinessToggle, GoogleButton, PasswordInput, SwitchLink, useNext } from './authParts';
-import ClerkAuthForm from './ClerkAuthForm';
+import ClerkAuth from './ClerkAuth';
 
 export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
-  return CLERK_ENABLED ? <ClerkAuthForm mode={mode} /> : <PasswordAuthForm mode={mode} />;
+  return CLERK_ENABLED ? <ClerkAuth mode={mode} /> : <PasswordAuthForm mode={mode} />;
 }
 
 /** Built-in email/password auth, used when Clerk isn't configured. */
