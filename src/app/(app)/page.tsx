@@ -5,7 +5,8 @@ import { CheckCircle2, Circle, Search, SearchX, Store, X } from 'lucide-react';
 import { api } from '@/lib/api';
 import type { Campaign } from '@/lib/types';
 import { useMe, useWallet } from '@/lib/hooks';
-import CampaignCard, { CampaignCardSkeleton, FeaturedCampaign, FeaturedCompact } from '@/components/CampaignCard';
+import CampaignCard, { CampaignCardSkeleton } from '@/components/CampaignCard';
+import FeaturedCarousel from '@/components/FeaturedCarousel';
 import { EmptyState, ErrorState, LinkButton, UnderlineTabs, cx } from '@/components/ui';
 
 const FILTERS = [
@@ -61,13 +62,14 @@ export default function Market() {
   const cats = useQuery({ queryKey: ['categories'], queryFn: () => api<{ categories: { id: string; name: string; slug: string }[] }>('/categories'), staleTime: 300_000 });
   const list = useQuery({
     queryKey: ['campaigns', dq, category, filter],
-    queryFn: () => api<{ campaigns: Campaign[]; featured: Campaign | null; total: number }>(`/campaigns?${new URLSearchParams({ q: dq, category, filter, pageSize: '24' })}`),
+    queryFn: () => api<{ campaigns: Campaign[]; featured: Campaign | null; featuredList?: Campaign[]; total: number }>(`/campaigns?${new URLSearchParams({ q: dq, category, filter, pageSize: '24' })}`),
     placeholderData: (prev) => prev,
     refetchInterval: 30_000,
   });
   const filtered = !!dq || category !== 'all' || filter !== 'all';
-  const featured = !filtered ? list.data?.featured : null;
-  const campaigns = (list.data?.campaigns ?? []).filter((c) => c.id !== featured?.id);
+  const featuredList = filtered ? [] : (list.data?.featuredList ?? (list.data?.featured ? [list.data.featured] : []));
+  const featuredIds = new Set(featuredList.map((c) => c.id));
+  const campaigns = (list.data?.campaigns ?? []).filter((c) => !featuredIds.has(c.id));
 
   return (
     <div className="space-y-6">
@@ -88,13 +90,8 @@ export default function Market() {
           items={[{ id: 'all', label: 'All' }, ...(cats.data?.categories ?? []).map((c) => ({ id: c.slug, label: c.name }))]} />
       </div> */}
 
-      {featured && (
-        <>
-          {/* Phones: compact card with small round image (reference style). Tablet/desktop: large photo. */}
-          <div className="md:hidden"><FeaturedCompact c={featured} /></div>
-          <div className="hidden md:block"><FeaturedCampaign c={featured} /></div>
-        </>
-      )}
+      {/* Phones: compact card per slide. Tablet/desktop: large photo. Auto-advances every 10s. */}
+      <FeaturedCarousel items={featuredList} />
 
       <UnderlineTabs label="Filter draws" value={filter} onChange={setFilter} items={FILTERS} />
 
@@ -102,7 +99,7 @@ export default function Market() {
         <ErrorState onRetry={() => list.refetch()} />
       ) : list.isLoading ? (
         <div className="grid gap-3 md:gap-4 lg:grid-cols-2 lg:gap-5 xl:grid-cols-3 items-start [&>*]:min-w-0">{Array.from({ length: 6 }, (_, i) => <CampaignCardSkeleton key={i} />)}</div>
-      ) : campaigns.length === 0 && !featured ? (
+      ) : campaigns.length === 0 && featuredList.length === 0 ? (
         filtered
           ? <EmptyState icon={SearchX} title="No matching draws" text="Try a different search, category or filter." action={<button onClick={() => { setQ(''); setCategory('all'); setFilter('all'); }} className="text-label font-semibold text-primary-text underline underline-offset-4">Clear filters</button>} />
           : <EmptyState icon={Store} title="No draws available right now." text="Check back soon — new prizes are added regularly." />
